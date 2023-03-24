@@ -1,0 +1,68 @@
+
+syntax= "proto3";
+
+import "google/protobuf/wrappers.proto";
+
+option java_multiple_files =true;
+option java_package="com.mycompany.demo_project.model";
+
+
+message UserInfo{
+    string userId=1;
+}
+
+message UnitInfo{
+    string unitId=1;
+}
+
+message PTPRequest{
+    string sendUserId=1;
+    string receiveUnitId=2;
+}
+
+message ReportInfo{
+    string reportId=1;
+}
+
+message ReportDetail{
+    string id=1;
+    string ownerId=2;
+    string topic=3;
+    string context=4;
+    string unitId=5;
+    bool approved=6;
+}
+
+message EditReport{
+    string id=1;
+    string topic=2;
+    string context=3;
+    string unitId=4; 
+}
+
+message FreshReport{
+    string topic=1;
+    string context=2;
+    string unitId=3; 
+}
+
+message Delete{
+    bool isDeleted=1;
+} 
+
+message ReportList{
+    repeated ReportDetail report=1;
+}
+
+message Empty{
+}
+
+service ReportService{
+    rpc getAllSendReport(Empty) returns (ReportList);    
+    rpc getAllReportReceive(UnitInfo) returns (ReportList);
+    rpc getAllReportToUnitFrom(PTPRequest) returns (ReportList);
+    rpc approveReport(ReportInfo) returns (ReportDetail);
+    rpc editReport(EditReport) returns (ReportDetail);
+    rpc deleteReport(ReportInfo) returns (Delete);
+    rpc createReport(FreshReport) returns (ReportDetail);
+}
